@@ -1,0 +1,1065 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kisan Mitra | Your Farming Companion</title>
+  <meta name="description" content="Kisan Mitra provides accessible agricultural guidance for farmers in Hindi and English.">
+
+  <style>
+    :root {
+      --green: #245c3b;
+      --green-dark: #173f2a;
+      --green-light: #eaf3e8;
+      --cream: #faf9f3;
+      --orange: #e9a23b;
+      --text: #26372b;
+      --muted: #69766b;
+      --white: #ffffff;
+      --border: #dfe7dc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(1120px, 90%);
+      margin: auto;
+    }
+
+    header {
+      background: rgba(250, 249, 243, 0.96);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .navbar {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--green-dark);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .brand-icon {
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      background: var(--green-light);
+      border-radius: 14px;
+      font-size: 1.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      color: var(--green);
+    }
+
+    .nav-button, .primary-button {
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 19px;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .nav-button:hover, .primary-button:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      padding: 75px 0 65px;
+      background:
+        radial-gradient(circle at 85% 20%, #e6efdc 0, transparent 28%),
+        var(--cream);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 55px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      background: var(--green-light);
+      color: var(--green);
+      padding: 7px 12px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
+      letter-spacing: -2px;
+      line-height: 1.12;
+      margin-bottom: 22px;
+      color: var(--green-dark);
+    }
+
+    h1 span {
+      color: #73984c;
+    }
+
+    .hero-copy {
+      color: var(--muted);
+      max-width: 540px;
+      font-size: 1.08rem;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .secondary-button {
+      padding: 11px 18px;
+      border: 1px solid #bdcbbb;
+      color: var(--green-dark);
+      background: transparent;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .secondary-button:hover {
+      background: var(--green-light);
+    }
+
+    .hero-note {
+      margin-top: 24px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .hero-card {
+      position: relative;
+      background: #e9f0df;
+      min-height: 370px;
+      border-radius: 28px;
+      padding: 25px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sun {
+      position: absolute;
+      top: 32px;
+      right: 42px;
+      width: 78px;
+      height: 78px;
+      background: #f3c66c;
+      border-radius: 50%;
+    }
+
+    .field-art {
+      position: absolute;
+      left: -15%;
+      right: -15%;
+      bottom: -90px;
+      height: 260px;
+      background: #a8c58a;
+      border-radius: 50% 50% 0 0;
+      transform: rotate(-8deg);
+    }
+
+    .field-art::before {
+      content: "";
+      position: absolute;
+      left: 12%;
+      right: -5%;
+      top: 42px;
+      height: 180px;
+      border-radius: 50%;
+      background: #7eaa66;
+    }
+
+    .field-art::after {
+      content: "";
+      position: absolute;
+      left: 25%;
+      right: -5%;
+      top: 85px;
+      height: 150px;
+      border-radius: 50%;
+      background: #527e4a;
+    }
+
+    .hero-card-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-card-content h2 {
+      max-width: 230px;
+      font-size: 1.65rem;
+      color: var(--green-dark);
+      line-height: 1.3;
+    }
+
+    .weather-pill {
+      display: inline-block;
+      margin-top: 14px;
+      background: white;
+      padding: 9px 13px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .section {
+      padding: 75px 0;
+    }
+
+    .section-heading {
+      text-align: center;
+      max-width: 650px;
+      margin: 0 auto 40px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      line-height: 1.2;
+      color: var(--green-dark);
+      margin-bottom: 12px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .feature-icon {
+      width: 49px;
+      height: 49px;
+      display: grid;
+      place-items: center;
+      background: var(--green-light);
+      border-radius: 14px;
+      font-size: 1.5rem;
+      margin-bottom: 17px;
+    }
+
+    .feature-card h3 {
+      margin-bottom: 8px;
+      color: var(--green-dark);
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .advisory-section {
+      background: #eef3e9;
+    }
+
+    .advisory-grid {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 45px;
+      align-items: start;
+    }
+
+    .advisory-intro h2 {
+      font-size: 2.35rem;
+      line-height: 1.2;
+      color: var(--green-dark);
+      margin-bottom: 18px;
+    }
+
+    .advisory-intro p {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .advisory-intro ul {
+      padding-left: 20px;
+      color: var(--text);
+    }
+
+    .advisory-intro li {
+      margin-bottom: 9px;
+    }
+
+    .advisory-form {
+      background: white;
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 12px 35px rgba(30, 60, 35, 0.06);
+    }
+
+    .advisory-form h3 {
+      color: var(--green-dark);
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+    }
+
+    .form-description {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 7px;
+      font-size: 0.92rem;
+    }
+
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      border: 1px solid #d5dfd2;
+      background: #fcfdfb;
+      border-radius: 10px;
+      padding: 12px;
+      outline: none;
+      color: var(--text);
+    }
+
+    .form-group textarea {
+      min-height: 125px;
+      resize: vertical;
+    }
+
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(36, 92, 59, 0.1);
+    }
+
+    .primary-button.full-width {
+      width: 100%;
+      min-height: 48px;
+    }
+
+    .status-message {
+      margin-top: 13px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .result-card {
+      display: none;
+      margin-top: 22px;
+      padding: 20px;
+      background: #f3f7ef;
+      border: 1px solid #d7e5d0;
+      border-radius: 14px;
+    }
+
+    .result-card.visible {
+      display: block;
+    }
+
+    .result-card h4 {
+      color: var(--green-dark);
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .result-card p {
+      white-space: pre-line;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .small-button {
+      border: 1px solid #c5d5c0;
+      background: white;
+      color: var(--green-dark);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .small-button:hover {
+      background: var(--green-light);
+    }
+
+    .notice {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .step {
+      padding: 22px;
+      border-left: 3px solid #9ab77e;
+    }
+
+    .step-number {
+      color: #73984c;
+      font-weight: 800;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .step h3 {
+      font-size: 1.05rem;
+      color: var(--green-dark);
+      margin-bottom: 7px;
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .focus-region {
+      background: var(--green-dark);
+      color: white;
+      padding: 42px 0;
+    }
+
+    .region-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .region-content h2 {
+      font-size: 1.65rem;
+      margin-bottom: 5px;
+    }
+
+    .region-content p {
+      color: #d7e5d8;
+    }
+
+    .region-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .region-tags span {
+      border: 1px solid #65846b;
+      background: #28543a;
+      border-radius: 30px;
+      padding: 8px 13px;
+      font-size: 0.88rem;
+    }
+
+    footer {
+      padding: 28px 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      color: var(--green-dark);
+      font-weight: 800;
+    }
+
+    @media (max-width: 800px) {
+      .hero-grid, .advisory-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 50px;
+      }
+
+      .hero-card {
+        min-height: 300px;
+      }
+
+      .features {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .steps {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .region-content {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .nav-links a:not(.nav-button) {
+        display: none;
+      }
+
+      .navbar {
+        min-height: 68px;
+      }
+
+      .brand {
+        font-size: 1rem;
+      }
+
+      .nav-button {
+        padding: 9px 12px;
+        font-size: 0.85rem;
+      }
+
+      h1 {
+        letter-spacing: -1px;
+      }
+
+      .features, .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 55px 0;
+      }
+
+      .advisory-form {
+        padding: 21px;
+      }
+
+      .hero-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .hero-actions button,
+      .hero-actions a {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container navbar">
+      <a href="#" class="brand">
+        <span class="brand-icon">🌱</span>
+        <span>Kisan Mitra <span lang="hi">किसान मित्र</span></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#advisory" class="nav-button">Get Guidance</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">🌾 Farming guidance, made simpler</span>
+          <h1>Your farm.<br>Your language.<br><span>Your Mitra.</span></h1>
+
+          <p class="hero-copy">
+            Practical agricultural guidance designed for farmers in Lucknow
+            and nearby rural areas. Ask questions, explore farming advice,
+            and access information in a simpler way.
+          </p>
+
+          <div class="hero-actions">
+            <button class="primary-button" onclick="scrollToAdvisory()">
+              Ask Kisan Mitra →
+            </button>
+            <a class="secondary-button" href="#features">Explore features</a>
+          </div>
+
+          <p class="hero-note">
+            Built with a focus on local crops, accessible language, and
+            farmer-friendly technology.
+          </p>
+        </div>
+
+        <div class="hero-card" aria-label="Illustration of green agricultural fields">
+          <div class="sun"></div>
+          <div class="hero-card-content">
+            <h2>Better information for better farming decisions.</h2>
+            <div class="weather-pill">🌿 Local-first • Farmer-focused</div>
+          </div>
+          <div class="field-art"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">What Kisan Mitra offers</span>
+          <h2>Designed around real farming needs</h2>
+          <p>
+            Agricultural information should be easier to access, understand,
+            and use when making decisions on the farm.
+          </p>
+        </div>
+
+        <div class="features">
+          <article class="feature-card">
+            <div class="feature-icon">🌱</div>
+            <h3>Crop Guidance</h3>
+            <p>
+              Explore basic information about crops such as wheat, mango,
+              mustard, and potato.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">🌦️</div>
+            <h3>Weather Awareness</h3>
+            <p>
+              Keep weather conditions in mind when considering farm
+              activities and crop-care decisions.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">🗣️</div>
+            <h3>Accessible Language</h3>
+            <p>
+              A simple interface with Hindi-friendly questions and
+              optional spoken responses.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section advisory-section" id="advisory">
+      <div class="container advisory-grid">
+        <div class="advisory-intro">
+          <span class="eyebrow">Your farming companion</span>
+          <h2>What is happening in your field?</h2>
+
+          <p>
+            Tell Kisan Mitra about your crop and the problem you are facing.
+            The prototype can provide basic sample guidance for common
+            farming questions.
+          </p>
+
+          <ul>
+            <li>Choose the crop you want help with.</li>
+            <li>Describe the issue in simple language.</li>
+            <li>Read the response or listen to it using your browser.</li>
+          </ul>
+        </div>
+
+        <div class="advisory-form">
+          <h3>Ask Kisan Mitra 🌿</h3>
+          <p class="form-description">
+            अपना सवाल लिखें — Ask your farming question below.
+          </p>
+
+          <form id="guidanceForm">
+            <div class="form-group">
+              <label for="crop">Select your crop</label>
+              <select id="crop" name="crop" required>
+                <option value="">Choose a crop</option>
+                <option value="wheat">Wheat (गेहूँ)</option>
+                <option value="mango">Mango (आम)</option>
+                <option value="mustard">Mustard (सरसों)</option>
+                <option value="potato">Potato (आलू)</option>
+                <option value="other">Other crop</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="language">Preferred language</label>
+              <select id="language" name="language">
+                <option value="en">English</option>
+                <option value="hi">Hindi (हिन्दी)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="question">Describe your farming problem</label>
+              <textarea
+                id="question"
+                name="question"
+                placeholder="Example: आम के बौर में कीड़ा लगा है, क्या करें?"
+                required
+                minlength="3"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="primary-button full-width" id="guidanceButton">
+              Get Guidance →
+            </button>
+
+            <p class="status-message" id="statusMessage" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="result-card" id="resultCard" aria-live="polite">
+            <h4 id="resultTitle">Your guidance</h4>
+            <p id="resultText"></p>
+
+            <div class="result-actions">
+              <button type="button" class="small-button" id="speakButton">
+                🔊 Listen
+              </button>
+              <button type="button" class="small-button" id="stopButton">
+                Stop audio
+              </button>
+            </div>
+          </div>
+
+          <p class="notice">
+            Prototype notice: Responses are basic demonstration guidance,
+            not a substitute for advice from an agricultural expert or KVK.
+            Avoid applying pesticides or fertilizers based only on this demo.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Simple by design</span>
+          <h2>From question to guidance</h2>
+          <p>
+            A straightforward flow for farmers who need information without
+            navigating complicated tools.
+          </p>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <div class="step-number">STEP 01</div>
+            <h3>Ask</h3>
+            <p>Choose a crop and describe the issue in your own words.</p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">STEP 02</div>
+            <h3>Process</h3>
+            <p>The prototype processes your question to identify a relevant topic.</p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">STEP 03</div>
+            <h3>Learn</h3>
+            <p>Review the sample guidance and recommended next steps.</p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">STEP 04</div>
+            <h3>Listen</h3>
+            <p>Use your browser's speech feature to hear the response.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="focus-region">
+      <div class="container region-content">
+        <div>
+          <h2>Starting close to home 🌾</h2>
+          <p>Designed with the agricultural context of Lucknow district in mind.</p>
+        </div>
+
+        <div class="region-tags">
+          <span>Lucknow</span>
+          <span>Malihabad</span>
+          <span>Kakori</span>
+          <span>Mohanlalganj</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <span class="footer-brand">🌱 Kisan Mitra — किसान मित्र</span>
+      <span>Prototype for accessible agricultural guidance.</span>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById("guidanceForm");
+    const cropSelect = document.getElementById("crop");
+    const languageSelect = document.getElementById("language");
+    const questionInput = document.getElementById("question");
+    const guidanceButton = document.getElementById("guidanceButton");
+    const statusMessage = document.getElementById("statusMessage");
+    const resultCard = document.getElementById("resultCard");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+    const speakButton = document.getElementById("speakButton");
+    const stopButton = document.getElementById("stopButton");
+
+    // This URL is empty for local/demo mode.
+    // Set it to your deployed backend URL when the Flask backend is online.
+    const API_BASE_URL = "";
+
+    function scrollToAdvisory() {
+      document.getElementById("advisory").scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+
+    function getSampleGuidance(crop, question, language) {
+      const text = question.toLowerCase();
+
+      const hindi = language === "hi";
+
+      if (hindi) {
+        if (
+          text.includes("कीड़ा") ||
+          text.includes("कीट") ||
+          text.includes("कीड़े") ||
+          text.includes("insect") ||
+          text.includes("pest")
+        ) {
+          return "फसल में कीट की समस्या होने पर पहले पत्तियों, तनों और प्रभावित हिस्सों को ध्यान से देखें। कीट और नुकसान की पहचान किए बिना कीटनाशक का प्रयोग न करें। अपने नजदीकी कृषि विज्ञान केंद्र (KVK) या कृषि विशेषज्ञ से सही पहचान और उपचार की सलाह लें।";
+        }
+
+        if (
+          text.includes("पानी") ||
+          text.includes("सिंचाई") ||
+          text.includes("irrigation") ||
+          text.includes("water")
+        ) {
+          return "सिंचाई का निर्णय मिट्टी की नमी, फसल की अवस्था और मौसम को देखकर लें। खेत में पानी जमा न होने दें। अपने क्षेत्र की मौसम जानकारी और स्थानीय कृषि विशेषज्ञ की सलाह के अनुसार सिंचाई करें।";
+        }
+
+        if (
+          text.includes("पीला") ||
+          text.includes("पीली") ||
+          text.includes("yellow") ||
+          text.includes("पत्ती")
+        ) {
+          return "पत्तियों का पीला पड़ना पोषक तत्वों की कमी, पानी की समस्या, कीट या रोग के कारण हो सकता है। पहले प्रभावित पत्तियों और पूरे खेत की स्थिति देखें। समस्या की पुष्टि किए बिना खाद या दवा का प्रयोग न करें; कृषि विशेषज्ञ से सलाह लें।";
+        }
+
+        return "आपकी फसल की समस्या के लिए सही सलाह देने से पहले लक्षण, फसल की अवस्था और खेत की स्थिति समझना जरूरी है। प्रभावित पौधों की तस्वीर लें और देखें कि समस्या कितने पौधों में है। सटीक पहचान और उपचार के लिए अपने नजदीकी KVK या कृषि विभाग से संपर्क करें।";
+      }
+
+      if (
+        text.includes("insect") ||
+        text.includes("pest") ||
+        text.includes("bug") ||
+        text.includes("worm")
+      ) {
+        return "Inspect the affected leaves, stems, and flowers to identify the pest and the extent of damage. Avoid applying pesticides before the pest is identified. Take clear photos and consult your nearest Krishi Vigyan Kendra (KVK) or agricultural extension officer for a suitable treatment.";
+      }
+
+      if (
+        text.includes("water") ||
+        text.includes("irrigation") ||
+        text.includes("rain")
+      ) {
+        return "Check soil moisture, crop growth stage, and the latest local weather forecast before irrigating. Avoid waterlogging and unnecessary irrigation. For a crop-specific schedule, consult your local KVK or agriculture department.";
+      }
+
+      if (
+        text.includes("yellow") ||
+        text.includes("leaf") ||
+        text.includes("leaves")
+      ) {
+        return "Yellowing leaves can result from nutrient deficiencies, excess or insufficient water, pests, or disease. Examine affected plants and check whether the issue is spreading. Do not apply fertilizer or pesticides without identifying the cause; consult a local agricultural expert.";
+      }
+
+      const cropNames = {
+        wheat: "wheat",
+        mango: "mango",
+        mustard: "mustard",
+        potato: "potato",
+        other: "crop"
+      };
+
+      const cropName = cropNames[crop] || "crop";
+
+      return `For your ${cropName} question, begin by observing the affected plants and recording the symptoms, crop growth stage, and recent weather. Avoid making costly treatment decisions without identifying the cause. For specific recommendations, contact your local KVK or agricultural extension officer. This demonstration does not use live weather data or an AI model.`;
+    }
+
+    async function getGuidance(crop, question, language) {
+      if (!API_BASE_URL) {
+        return getSampleGuidance(crop, question, language);
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/guidance`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          crop,
+          question,
+          language
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("The guidance service is temporarily unavailable.");
+      }
+
+      const data = await response.json();
+      return data.guidance;
+    }
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const crop = cropSelect.value;
+      const question = questionInput.value.trim();
+      const language = languageSelect.value;
+
+      if (!crop || question.length < 3) {
+        statusMessage.textContent = "Please select a crop and enter your question.";
+        return;
+      }
+
+      guidanceButton.disabled = true;
+      guidanceButton.textContent = "Getting guidance...";
+      statusMessage.textContent = "Preparing guidance for your question...";
+      resultCard.classList.remove("visible");
+
+      try {
+        const guidance = await getGuidance(crop, question, language);
+
+        resultTitle.textContent =
+          language === "hi" ? "आपके लिए सलाह" : "Your guidance";
+
+        resultText.textContent = guidance;
+        resultCard.classList.add("visible");
+        statusMessage.textContent =
+          "Demo guidance generated. Verify important decisions with a local expert.";
+      } catch (error) {
+        statusMessage.textContent =
+          "Could not connect to the guidance service. Please try again.";
+
+        console.error("Guidance error:", error);
+      } finally {
+        guidanceButton.disabled = false;
+        guidanceButton.textContent = "Get Guidance →";
+      }
+    });
+
+    speakButton.addEventListener("click", function () {
+      if (!("speechSynthesis" in window)) {
+        statusMessage.textContent =
+          "Speech playback is not supported in this browser.";
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(resultText.textContent);
+      utterance.lang = languageSelect.value === "hi" ? "hi-IN" : "en-IN";
+      utterance.rate = 0.9;
+
+      window.speechSynthesis.speak(utterance);
+    });
+
+    stopButton.addEventListener("click", function () {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+    });
+
+    window.addEventListener("beforeunload", function () {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+    });
+  </script>
+</body>
+</html>
