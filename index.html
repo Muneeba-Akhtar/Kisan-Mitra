@@ -1062,4 +1062,135 @@
     });
   </script>
 </body>
+
+<!-- Kisan Mitra: Live Weather Card -->
+<style>
+  .km-weather {
+    max-width: 850px;
+    margin: 24px auto;
+    padding: 22px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #e8f8e9, #f4fbef);
+    color: #194d2a;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+
+  .km-weather h2 {
+    margin: 0 0 6px;
+    font-size: 1.35rem;
+  }
+
+  .km-weather-subtitle {
+    margin: 0 0 18px;
+    color: #52745a;
+    font-size: 0.9rem;
+  }
+
+  .km-weather-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .km-weather-item {
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.8);
+  }
+
+  .km-weather-item span {
+    display: block;
+    font-size: 0.85rem;
+    color: #52745a;
+  }
+
+  .km-weather-item strong {
+    display: block;
+    margin-top: 5px;
+    font-size: 1.25rem;
+  }
+
+  #km-weather-status {
+    font-size: 0.9rem;
+    margin-top: 14px;
+  }
+
+  @media (max-width: 480px) {
+    .km-weather { margin: 16px 8px; padding: 16px; }
+    .km-weather-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .km-weather-item { padding: 10px; }
+  }
+</style>
+
+<section class="km-weather" aria-label="Current weather">
+  <h2>🌦️ Local Weather — Lucknow</h2>
+  <p class="km-weather-subtitle">
+    Current conditions to help farmers plan their day
+  </p>
+
+  <div class="km-weather-grid">
+    <div class="km-weather-item">
+      <span>🌡️ Temperature</span>
+      <strong id="km-temp">Loading...</strong>
+    </div>
+    <div class="km-weather-item">
+      <span>💧 Humidity</span>
+      <strong id="km-humidity">Loading...</strong>
+    </div>
+    <div class="km-weather-item">
+      <span>🌧️ Precipitation</span>
+      <strong id="km-rain">Loading...</strong>
+    </div>
+    <div class="km-weather-item">
+      <span>💨 Wind speed</span>
+      <strong id="km-wind">Loading...</strong>
+    </div>
+  </div>
+
+  <p id="km-weather-status" role="status">
+    Connecting to the weather service...
+  </p>
+</section>
+
+<script>
+async function loadKisanMitraWeather() {
+  const status = document.getElementById("km-weather-status");
+
+  try {
+    const response = await fetch("http://127.0.0.1:5000/weather");
+    if (!response.ok) throw new Error("Weather service unavailable");
+
+    const data = await response.json();
+
+    if (!data.available) {
+      throw new Error("Live weather is temporarily unavailable");
+    }
+
+    document.getElementById("km-temp").textContent =
+      data.temperature_c + " °C";
+
+    document.getElementById("km-humidity").textContent =
+      data.humidity_percent + "%";
+
+    document.getElementById("km-rain").textContent =
+      data.precipitation_mm + " mm";
+
+    document.getElementById("km-wind").textContent =
+      data.wind_speed_kmh + " km/h";
+
+    status.textContent =
+      "Updated from the weather service · " +
+      (data.time || "Latest available observation");
+
+  } catch (error) {
+    status.textContent =
+      "Weather temporarily unavailable. Please try again.";
+    console.error("Kisan Mitra weather:", error);
+  }
+}
+
+loadKisanMitraWeather();
+</script>
+
 </html>

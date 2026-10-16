@@ -16,3 +16,7 @@ env/
 .vscode/
 .DS_Store
 Thumbs.db
+.env
+__pycache__/
+venv/
+.venv/
