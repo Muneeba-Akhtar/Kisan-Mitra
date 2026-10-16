@@ -1058,6 +1058,68 @@
       window.speechSynthesis.speak(utterance);
     });
 
+    
+    // Hindi voice input for Kisan Mitra
+    const voiceButton = document.getElementById("km-voice-btn");
+    const voiceStatus = document.getElementById("km-voice-status");
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+
+      recognition.lang = "hi-IN";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      voiceButton.addEventListener("click", function () {
+        recognition.lang =
+          languageSelect.value === "hi" ? "hi-IN" : "en-IN";
+
+        voiceStatus.textContent = "🎙️ सुन रहे हैं... अब अपना सवाल बोलें।";
+        voiceButton.disabled = true;
+
+        try {
+          recognition.start();
+        } catch (error) {
+          voiceStatus.textContent =
+            "माइक पहले से चालू है। कृपया एक पल रुकें।";
+          voiceButton.disabled = false;
+        }
+      });
+
+      recognition.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+
+        questionInput.value = transcript;
+        questionInput.dispatchEvent(new Event("input", { bubbles: true }));
+
+        voiceStatus.textContent = "✅ आपका सवाल: " + transcript;
+      };
+
+      recognition.onerror = function (event) {
+        const messages = {
+          "not-allowed": "माइक की अनुमति दें और फिर कोशिश करें।",
+          "no-speech": "आवाज़ नहीं मिली। कृपया दोबारा बोलें।",
+          "network": "नेटवर्क की समस्या है। इंटरनेट जाँचें।",
+          "audio-capture": "माइक नहीं मिला। अपना माइक्रोफोन जाँचें।"
+        };
+
+        voiceStatus.textContent =
+          messages[event.error] || "आवाज़ पहचान नहीं पाए। दोबारा कोशिश करें।";
+      };
+
+      recognition.onend = function () {
+        voiceButton.disabled = false;
+      };
+    } else {
+      voiceButton.disabled = true;
+      voiceStatus.textContent =
+        "इस ब्राउज़र में voice input उपलब्ध नहीं है। Chrome में कोशिश करें।";
+    }
+
     stopButton.addEventListener("click", function () {
       if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
