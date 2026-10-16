@@ -1,9 +1,14 @@
 
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.request import urlopen
+from urllib.parse import urlencode, urlsplit
 import json
+import os
+from pathlib import Path
 
-HOST = "127.0.0.1"
-PORT = 5000
+HOST = "0.0.0.0"
+PORT = int(os.environ.get("PORT", "5000"))
+BASE_DIR = Path(__file__).resolve().parent
 
 
 def get_guidance(crop, question):
@@ -29,45 +34,43 @@ def get_guidance(crop, question):
     if any(word in q for word in ["pest", "insect", "कीट", "कीड़ा"]):
         return (
             f"🔎 For pests in {crop}, inspect the leaves, stems, and "
-            "undersides of leaves. Take a clear photo and identify the "
-            "pest before choosing a treatment. Ask your local KVK "
-            "agriculture expert before applying pesticides."
+            "undersides of leaves. Identify the pest before choosing "
+            "a treatment. Consult your local KVK agriculture expert "
+            "before applying pesticides."
         )
 
     if any(word in q for word in ["mango", "आम", "fruit", "फल"]):
         return (
-            "🥭 For mango trees, inspect leaves, flowers, and fruits for "
-            "visible symptoms. Orchard advice depends on the growth stage, "
-            "weather, and symptoms. Share a photo or consult a local "
-            "agriculture expert for a more specific recommendation."
+            "🥭 For mango trees, inspect leaves, flowers, and fruits "
+            "for visible symptoms. Advice depends on growth stage, "
+            "weather, and symptoms. Consult a local agriculture expert "
+            "for a specific recommendation."
         )
 
     return (
         f"🌾 Kisan Mitra farming guidance for {crop}: "
-        "First, inspect the crop for visible symptoms and check soil "
-        "moisture and recent weather conditions. Avoid guessing pesticide "
-        "doses. Tell us when the problem started, which crop stage it is "
-        "in, and what symptoms you observe for more targeted guidance. "
-        "You can also consult your local Krishi Vigyan Kendra (KVK)."
+        "Inspect the crop for visible symptoms and check soil moisture "
+        "and recent weather. Avoid guessing pesticide doses. Share when "
+        "the problem started, the crop stage, and the symptoms for more "
+        "targeted guidance. You can also consult your local KVK."
     )
 
 
-
 def get_lucknow_weather():
-    from urllib.request import urlopen
-    from urllib.parse import urlencode
-
     params = urlencode({
         "latitude": 26.8467,
         "longitude": 80.9462,
-        "current": "temperature_2m,relative_humidity_2m,precipitation,rain,wind_speed_10m",
+        "current": (
+            "temperature_2m,relative_humidity_2m,precipitation,"
+            "rain,wind_speed_10m"
+        ),
         "timezone": "Asia/Kolkata"
     })
 
     try:
         url = "https://api.open-meteo.com/v1/forecast?" + params
 
-        with urlopen(url, timeout=5) as response:
+        with urlopen(url, timeout=10) as response:
             data = json.loads(response.read().decode("utf-8"))
 
         current = data.get("current", {})
@@ -91,14 +94,20 @@ def get_lucknow_weather():
             "message": "Live weather is temporarily unavailable."
         }
 
+
 class KisanMitraHandler(BaseHTTPRequestHandler):
+
     def send_json(self, data, status=200):
         body = json.dumps(data, ensure_ascii=False).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header(
+            "Access-Control-Allow-Methods", "GET, POST, OPTIONS"
+        )
+        self.send_header(
+            "Access-Control-Allow-Headers", "Content-Type"
+        )
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
@@ -106,33 +115,45 @@ class KisanMitraHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         self.send_json({"success": True})
 
-    
-    
-    
     def do_GET(self):
-        path = self.path.split("?")[0].rstrip("/")
-        print("REQUESTED PATH:", repr(path))
+        path = urlsplit(self.path).path.rstrip("/") or "/"
 
-        if path == "":
-            self.send_json({
-                "status": "online",
-                "project": "Kisan Mitra",
-                "message": "Kisan Mitra backend is running!"
-            })
+        if path == "/":
+            try:
+                html_path = BASE_DIR / "index.html"
+                body = html_path.read_bytes()
+
+                self.send_response(200)
+                self.send_header(
+                    "Content-Type", "text/html; charset=utf-8"
+                )
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+
+            except FileNotFoundError:
+                self.send_json({
+                    "success": False,
+                    "error": "index.html was not found."
+                }, 500)
+
         elif path == "/weather":
             self.send_json(get_lucknow_weather())
+
         else:
             self.send_json({
                 "success": False,
-                "error": "Route not found",
-                "path_received": path
+                "error": "Route not found"
             }, 404)
 
-
-
     def do_POST(self):
-        if self.path != "/get-guidance":
-            self.send_json({"success": False, "error": "Route not found"}, 404)
+        path = urlsplit(self.path).path
+
+        if path != "/get-guidance":
+            self.send_json({
+                "success": False,
+                "error": "Route not found"
+            }, 404)
             return
 
         try:
@@ -149,20 +170,17 @@ class KisanMitraHandler(BaseHTTPRequestHandler):
                 }, 400)
                 return
 
-            
+            answer = get_guidance(crop, question)
             weather = get_lucknow_weather()
 
-            answer = get_guidance(crop, question)
-
             if weather.get("available"):
-                weather_note = (
+                answer += (
                     f"\n\n🌦️ Current Lucknow weather: "
                     f"{weather['temperature_c']}°C, "
                     f"humidity {weather['humidity_percent']}%, "
                     f"rainfall {weather['precipitation_mm']} mm, "
                     f"wind {weather['wind_speed_kmh']} km/h."
                 )
-                answer += weather_note
 
             self.send_json({
                 "success": True,
@@ -171,7 +189,8 @@ class KisanMitraHandler(BaseHTTPRequestHandler):
                 "mode": "demo"
             })
 
-        except Exception:
+        except Exception as error:
+            print("GUIDANCE ERROR:", error)
             self.send_json({
                 "success": False,
                 "error": "Could not process your question. Please try again."
@@ -182,10 +201,9 @@ class KisanMitraHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    server = HTTPServer((HOST, PORT), KisanMitraHandler)
-    print("\n🌱 KISAN MITRA IS RUNNING!")
-    print("Open http://127.0.0.1:5000/ to test the backend.")
-    print("Keep this terminal open while using your website.")
+    server = ThreadingHTTPServer((HOST, PORT), KisanMitraHandler)
+    print(f"\n🌱 KISAN MITRA RUNNING ON PORT {PORT}")
+    print("Open http://127.0.0.1:5000/ locally.")
     print("Press Ctrl+C to stop.\n")
 
     try:
